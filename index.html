@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>ASF2026 | Official - Teams Hub</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;700;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { 
+                        sans: ['Public Sans', 'sans-serif'], 
+                        display: ['Space Grotesk', 'sans-serif'] 
+                    },
+                    colors: { 
+                        intl: { blue: '#0015ff', gold: '#c5a059', slate: '#0f172a', light: '#f8fafc' } 
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* UI State Management */
+        .page-view { display: none; }
+        .page-view.active { display: block; animation: fadeIn 0.4s ease-out; }
+        .nav-active { color: #0015ff; border-bottom: 2px solid #0015ff; }
+        
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(5px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        /* Decorative Elements */
+        .hero-mesh { 
+            background-color: #f8fafc; 
+            background-image: radial-gradient(#cbd5e1 0.5px, transparent 0.5px); 
+            background-size: 24px 24px; 
+        }
+        .category-tab.active { background: #0015ff; color: white; border-color: #0015ff; }
+        
+        /* Gallery System */
+        .gallery-stage {
+            width: 800px;
+            aspect-ratio: 16 / 9;
+            margin: 40px auto;
+            overflow: hidden;
+            position: relative;
+            border: 2px solid #0f172a;
+            background: #000;
+        }
+
+        .animate-slide {
+            display: flex;
+            width: 400%;
+            height: 100%;
+            animation: slide-cycle 20s infinite cubic-bezier(0.85, 0, 0.15, 1);
+        }
+
+        .slide-item { width: 25%; height: 100%; position: relative; flex-shrink: 0; }
+        .slide-item img { width: 100% !important; height: 100% !important; object-fit: cover !important; }
+
+        @keyframes slide-cycle {
+            0%, 20% { transform: translateX(0); }
+            25%, 45% { transform: translateX(-25%); }
+            50%, 70% { transform: translateX(-50%); }
+            75%, 95% { transform: translateX(-75%); }
+            100% { transform: translateX(0); }
+        }
+    
+        /* Mobile Navigation */
+        #mobile-menu {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+            flex-direction: column;
+            padding: 0.8rem;
+            transition: transform 0.5s ease, opacity 0.3s ease;
+            opacity: 0;
+            transform: translateX(100%);
+        }
+
+        #mobile-menu.active { display: flex; opacity: 1; transform: translateX(0); }
+
+        @media (max-width: 850px) {
+            .gallery-stage { width: 85vw; height: calc(85vw * (9/16)); }
+        }
+        
+        /* Team card hover effects */
+        .team-card {
+            transition: all 0.25s ease;
+        }
+        .team-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 30px -12px rgba(0,21,255,0.15);
+        }
+        .social-icon {
+            transition: all 0.2s ease;
+        }
+        .social-icon:hover {
+            transform: scale(1.1);
+            color: #0015ff;
+        }
+    </style>
+</head>
+
+<body class="bg-intl-light text-intl-slate font-sans">
+
+    <header class="bg-intl-slate text-white py-2 px-6 text-[10px] font-bold tracking-[0.2em] flex justify-between items-center">
+        <span>ASF2026 | 2nd EDITION</span>
+        <button onclick="toggleAdmin()" class="hover:text-intl-gold transition">
+            <i class="fa-solid fa-shield-halved"></i>
+        </button>
+    </header>
+
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="navigateTo('home')">
+                <div class="w-10 h-10 flex items-center justify-center rounded-sm">
+                    <i class="fa-solid fa-globe text-intl-slate text-xl"></i>
+                </div>
+                <div class="flex flex-col leading-none">
+                    <span class="font-display text-xl font-black tracking-tighter uppercase">ALL STARS</span>
+                    <span class="text-[10px] font-bold text-intl-blue tracking-widest uppercase">FIESTA 2026</span>
+                </div>
+            </div>
+            
+            <div class="hidden lg:flex space-x-10 text-[11px] font-black uppercase tracking-widest">
+                <button onclick="navigateTo('home')" class="nav-link py-7 hover:text-intl-blue transition">Home</button>
+                <button onclick="navigateTo('standings')" class="nav-link py-7 hover:text-intl-blue transition">Standings</button>
+                <button onclick="navigateTo('matches')" class="nav-link py-7 hover:text-intl-blue transition">Matches</button>
+                <button onclick="navigateTo('teams')" class="nav-link py-7 hover:text-intl-blue transition">Teams</button>
+                <button onclick="navigateTo('organiser')" class="nav-link py-7 hover:text-intl-blue transition">Organiser</button>
+            </div>
+
+            <button onclick="toggleMobileMenu()" class="lg:hidden text-2xl text-intl-slate p-2">
+                <i class="fa-solid fa-bars-staggered"></i>
+            </button>
+        </div>
+
+        <div id="mobile-menu" class="lg:hidden bg-intl-blue/95">
+            <div class="flex justify-end p-4">
+                <button onclick="toggleMobileMenu()" class="text-white text-5xl">&times;</button>
+            </div>
+            <div class="flex flex-col gap-8 px-8 bg-intl-blue/95 text-white text-4xl font-display font-black uppercase italic tracking-tighter">
+                <button onclick="mobileNav('home')" class="text-left border-b border-white/10 pb-4">Home</button>
+                <button onclick="mobileNav('standings')" class="text-left border-b border-white/10 pb-4">Standings</button>
+                <button onclick="mobileNav('matches')" class="text-left border-b border-white/10 pb-4">Matches</button>
+                <button onclick="mobileNav('teams')" class="text-left border-b border-white/10 pb-4">Teams</button>
+                <button onclick="mobileNav('organiser')" class="text-left border-b border-white/10 pb-4">Organiser</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HOME PAGE (existing content) -->
+    <main id="page-home" class="page-view active">
+        <section class="hero-mesh py-20 border-b border-slate-200">
+            <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <h1 class="text-7xl md:text-9xl font-display font-black leading-none mb-8">FOR THE <br><span class="text-intl-blue">PRIDE.</span></h1>
+                    <p class="text-xl text-slate-500 max-w-md mb-10 leading-relaxed">The pinnacle of SBP-MRSM youth football. Category '05 and '06 Elite Rounds.</p>
+                    <button onclick="navigateTo('matches')" class="bg-intl-slate text-white px-10 py-5 font-bold uppercase text-xs tracking-widest hover:bg-intl-blue transition">View Match Day</button>
+                </div>
+                <div class="relative">
+                    <div class="aspect-video w-full overflow-hidden shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=1200" class="w-full h-full object-cover grayscale hover:grayscale-0 transition duration-700" alt="Hero">
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="py-20 border-b border-slate-200 bg-white">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                    <div class="p-8 border-l-4 border-intl-blue bg-intl-light">
+                        <div class="text-intl-blue mb-4 text-2xl"><i class="fa-solid fa-calendar-days"></i></div>
+                        <h3 class="font-display font-black uppercase text-sm tracking-widest mb-2">Date</h3>
+                        <p class="text-2xl font-bold tracking-tighter italic uppercase">19 — 20<br>September 2026</p>
+                        <p class="text-[10px] text-slate-400 mt-2 font-bold uppercase">0800H - 2300H</p>
+                    </div>
+                    <div class="p-8 border-l-4 border-intl-slate bg-intl-light">
+                        <div class="text-intl-slate mb-4 text-2xl"><i class="fa-solid fa-location-dot"></i></div>
+                        <h3 class="font-display font-black uppercase text-sm tracking-widest mb-2">Venue</h3>
+                        <p class="text-2xl font-bold tracking-tighter italic uppercase">Synthetic Field <br>Section 28</p>
+                        <p class="text-[10px] text-slate-400 mt-2 font-bold uppercase">Shah Alam City Council</p>
+                    </div>
+                    <div class="p-8 border-l-4 border-intl-gold bg-intl-light">
+                        <div class="text-intl-gold mb-4 text-2xl"><i class="fa-solid fa-trophy"></i></div>
+                        <h3 class="font-display font-black uppercase text-sm tracking-widest mb-2">Prizepool</h3>
+                        <p class="text-2xl font-bold tracking-tighter italic uppercase text-intl-gold">RM4,800 <br>Trophy + Mock cheque</p>
+                        <p class="text-[10px] text-slate-400 mt-2 font-bold uppercase">Medal for all stars</p>
+                    </div>
+                    <div class="p-8 border-l-4 border-slate-300 bg-intl-light">
+                        <div class="text-slate-400 mb-4 text-2xl"><i class="fa-solid fa-ticket"></i></div>
+                        <h3 class="font-display font-black uppercase text-sm tracking-widest mb-2">Participation Fee</h3>
+                        <p class="text-2xl font-bold tracking-tighter italic uppercase">RM950 <br>Per Team</p>
+                        <p class="text-[10px] text-slate-400 mt-2 font-bold uppercase">Enjoy 9 benefits included</p>
+                    </div>
+                </div>
+                <div class="mt-12 flex flex-wrap gap-8 justify-center border-t border-slate-100 pt-10">
+                    <div class="flex items-center gap-3"><span class="w-2 h-2 bg-intl-blue rounded-full"></span><span class="text-[10px] font-black uppercase tracking-widest text-slate-500">FIFA Approved Refs</span></div>
+                    <div class="flex items-center gap-3"><span class="w-2 h-2 bg-intl-blue rounded-full"></span><span class="text-[10px] font-black uppercase tracking-widest text-slate-500">VAR Technology</span></div>
+                    <div class="flex items-center gap-3"><span class="w-2 h-2 bg-intl-blue rounded-full"></span><span class="text-[10px] font-black uppercase tracking-widest text-slate-500">UHD Global Broadcast</span></div>
+                    <div class="flex items-center gap-3"><span class="w-2 h-2 bg-intl-blue rounded-full"></span><span class="text-[10px] font-black uppercase tracking-widest text-slate-500">Anti-Doping Compliant</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-6 text-center">
+                <h2 class="text-[10px] font-black tracking-[0.5em] uppercase text-intl-blue mb-10">Exclusive Tournament Gallery</h2>
+                <div class="gallery-stage shadow-[0_20px_50px_rgba(0,21,255,0.2)]">
+                    <div class="animate-slide">
+                        <div class="slide-item"><img src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=1200" alt="Slide 1"><div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div><div class="absolute bottom-10 left-10 text-left text-white"><span class="text-[9px] font-bold tracking-[0.3em] text-intl-gold uppercase">Stage 01</span><h4 class="text-3xl font-display font-black italic uppercase">Opening Ceremony</h4></div></div>
+                        <div class="slide-item"><img src="https://images.unsplash.com/photo-1518091043644-c1d4457512c6?q=80&w=1200" alt="Slide 2"><div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div><div class="absolute bottom-10 left-10 text-left text-white"><span class="text-[9px] font-bold tracking-[0.3em] text-intl-gold uppercase">Stage 02</span><h4 class="text-3xl font-display font-black italic uppercase">The Grand Stadium</h4></div></div>
+                        <div class="slide-item"><img src="https://images.unsplash.com/photo-1551958219-acbc608c6377?q=80&w=1200" alt="Slide 3"><div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div><div class="absolute bottom-10 left-10 text-left text-white"><span class="text-[9px] font-bold tracking-[0.3em] text-intl-gold uppercase">Stage 03</span><h4 class="text-3xl font-display font-black italic uppercase">Team Arrival</h4></div></div>
+                        <div class="slide-item"><img src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=1200" alt="Slide 1 Clone"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- MATCHES PAGE (kept functional) -->
+    <main id="page-matches" class="page-view py-20">
+        <div class="max-w-5xl mx-auto px-6">
+            <h2 class="text-5xl font-display font-bold mb-8 text-center uppercase tracking-tighter">Match <span class="text-intl-blue">Schedule</span></h2>
+            <div class="flex justify-center mb-10">
+                <div class="inline-flex bg-slate-200 p-1 rounded-sm">
+                    <button onclick="switchCategory('05', 'matches')" id="btn-m-05" class="category-tab active px-6 py-2 text-[10px] font-black tracking-widest transition">CAT '05</button>
+                    <button onclick="switchCategory('06', 'matches')" id="btn-m-06" class="category-tab px-6 py-2 text-[10px] font-black tracking-widest transition">CAT '06</button>
+                </div>
+            </div>
+            <div id="match-list" class="space-y-6"></div>
+        </div>
+    </main>
+
+    <!-- STANDINGS PAGE -->
+    <main id="page-standings" class="page-view py-20">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-12">
+                <h3 class="text-6xl font-display font-black uppercase tracking-tighter mb-6">Group <span class="text-intl-blue">Stage</span></h3>
+                <div class="inline-flex bg-slate-200 p-1 rounded-sm">
+                    <button onclick="switchCategory('05', 'standings')" id="btn-s-05" class="category-tab active px-6 py-2 text-[10px] font-black tracking-widest transition">CAT '05</button>
+                    <button onclick="switchCategory('06', 'standings')" id="btn-s-06" class="category-tab px-6 py-2 text-[10px] font-black tracking-widest transition">CAT '06</button>
+                </div>
+            </div>
+            <div id="standings-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-10"></div>
+        </div>
+    </main>
+
+    <!-- NEW TEAMS PAGE (replaces News) - with 2 categories, 16 teams each, logos, school, social media -->
+    <main id="page-teams" class="page-view py-20">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl md:text-6xl font-display font-black uppercase tracking-tighter mb-4">Elite <span class="text-intl-blue">Squads</span></h2>
+                <p class="text-slate-500 max-w-2xl mx-auto">Meet the 32 competing academies — representing excellence, discipline, and the future of football.</p>
+            </div>
+
+            <!-- Category Toggle -->
+            <div class="flex justify-center mb-12">
+                <div class="inline-flex bg-slate-200 p-1 rounded-full shadow-sm">
+                    <button onclick="switchTeamCategory('05')" id="teamCatBtn05" class="team-cat-btn px-8 py-3 text-[11px] font-black uppercase tracking-widest rounded-full transition-all duration-200 bg-intl-blue text-white shadow-md">CAT '05</button>
+                    <button onclick="switchTeamCategory('06')" id="teamCatBtn06" class="team-cat-btn px-8 py-3 text-[11px] font-black uppercase tracking-widest rounded-full transition-all duration-200 text-slate-600 hover:bg-slate-100">CAT '06</button>
+                </div>
+            </div>
+
+            <!-- Teams Grid Container -->
+            <div id="teams-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <!-- Dynamic JS will render teams here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- ORGANISER PAGE -->
+    <main id="page-organiser" class="page-view py-20 bg-white">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="bg-intl-slate text-white p-12 mb-12">
+                <h2 class="text-4xl font-display font-bold uppercase mb-4">Official <span class="text-intl-gold">Organising Committee</span></h2>
+                <p class="text-slate-400">The 2026 World Elite Cup is managed by Global Football Ventures (GFV) under international federation guidelines.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div class="flex gap-4 items-start"><div class="w-12 h-12 bg-slate-100 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-envelope"></i></div><div><h4 class="font-bold">General Inquiry</h4><p class="text-sm text-slate-500">contact@worldelitecup.com</p></div></div>
+                <div class="flex gap-4 items-start"><div class="w-12 h-12 bg-slate-100 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-map-pin"></i></div><div><h4 class="font-bold">HQ Office</h4><p class="text-sm text-slate-500">Avenue de la FIFA 20, Switzerland</p></div></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Partners Section (global footer) -->
+    <section class="py-20 bg-slate-50 border-t border-slate-200">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <h2 class="text-xs font-black tracking-[0.4em] uppercase text-slate-400 mb-16">Official Partners</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-1 border border-slate-200 bg-slate-200">
+                <div class="bg-white py-16 flex items-center justify-center grayscale opacity-50 hover:opacity-100 transition"><i class="fa-brands fa-apple text-5xl"></i></div>
+                <div class="bg-white py-16 flex items-center justify-center grayscale opacity-50 hover:opacity-100 transition"><i class="fa-brands fa-amazon text-5xl"></i></div>
+                <div class="bg-white py-16 flex items-center justify-center grayscale opacity-50 hover:opacity-100 transition"><i class="fa-brands fa-microsoft text-5xl"></i></div>
+                <div class="bg-white py-16 flex items-center justify-center grayscale opacity-50 hover:opacity-100 transition"><i class="fa-brands fa-google text-5xl"></i></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admin Modal -->
+    <div id="admin-modal" class="fixed inset-0 z-[100] bg-intl-slate/95 hidden flex items-center justify-center p-6 backdrop-blur-md">
+        <div class="bg-white w-full max-w-lg p-10">
+            <h3 class="text-3xl font-display font-black mb-8 border-b-2 border-intl-blue pb-4 uppercase">Score Update</h3>
+            <form id="score-form" onsubmit="submitScore(event)" class="space-y-8">
+                <input type="hidden" id="match-id">
+                <div class="flex items-center gap-10"><div class="flex-1 text-center"><label id="home-label" class="block text-[10px] font-black uppercase mb-3 text-slate-400"></label><input type="number" id="home-score" class="w-full text-5xl font-display font-bold text-center border-b-4 border-slate-100 focus:border-intl-blue outline-none py-4"></div><span class="text-2xl font-black">:</span><div class="flex-1 text-center"><label id="away-label" class="block text-[10px] font-black uppercase mb-3 text-slate-400"></label><input type="number" id="away-score" class="w-full text-5xl font-display font-bold text-center border-b-4 border-slate-100 focus:border-intl-blue outline-none py-4"></div></div>
+                <select id="match-status" class="w-full p-4 bg-slate-50 border border-slate-200 font-bold uppercase text-xs tracking-widest"><option value="UPCOMING">Upcoming</option><option value="LIVE">Live</option><option value="FT">Full Time</option></select>
+                <div class="flex gap-4 pt-4"><button type="button" onclick="closeAdmin()" class="flex-1 text-xs font-black uppercase border border-slate-200 py-5">Cancel</button><button type="submit" class="flex-1 text-xs font-black uppercase bg-intl-blue text-white py-5 shadow-lg shadow-blue-500/30">Save Result</button></div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="bg-intl-slate text-white py-20 px-6 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-10 md:mb-0"><span class="font-display text-2xl font-black uppercase">World Elite Cup</span><p class="text-slate-500 text-[10px] mt-2 uppercase tracking-[0.3em]">Official Tournament Portal © 2026</p></div>
+            <div class="flex gap-12 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400"><a href="#" class="hover:text-intl-gold">Privacy</a><a href="#" class="hover:text-intl-gold">Anti-Doping</a></div>
+        </div>
+    </footer>
+
+    <script>
+        // ---------- TEAMS DATA (16 per category) with logos, school names, social media handles ----------
+        const generateTeamsForCat = (catPrefix, startIdx) => {
+            const schoolsList = [
+                "Metro United Academy", "Elite Sports College", "Strikers Institute", "Future Stars HS", "Apex Football School", "Legacy Prep", "Thunderbolt Academy", "Phoenix Sports School",
+                "Victory International", "Champions Academy", "Dynamo Youth Centre", "Rising Titans HS", "Olympus Football", "Velocity Institute", "Summit Elite", "Nova Sports College"
+            ];
+            const socials = [
+                { ig: "@elite_fc", tw: "@elitefc", fb: "elitefootball" },
+                { ig: "@strikers_official", tw: "@strikersfc", fb: "strikersacademy" },
+                { ig: "@apex_squad", tw: "@apexfc", fb: "apexfootball" },
+                { ig: "@futurestars_my", tw: "@futurestars", fb: "futurestars" },
+                { ig: "@legacy_united", tw: "@legacyunited", fb: "legacyunited" },
+                { ig: "@thunderbolt_fc", tw: "@thunderbolt", fb: "thunderboltacademy" },
+                { ig: "@phoenix_sports", tw: "@phoenixfc", fb: "phoenixsports" },
+                { ig: "@victory_intl", tw: "@victoryintl", fb: "victoryintl" },
+                { ig: "@champions_acad", tw: "@champions", fb: "championsacademy" },
+                { ig: "@dynamo_youth", tw: "@dynamo", fb: "dynamoyouth" },
+                { ig: "@rising_titans", tw: "@risingtitans", fb: "risingtitans" },
+                { ig: "@olympus_fc", tw: "@olympus", fb: "olympusfc" },
+                { ig: "@velocity_elite", tw: "@velocity", fb: "velocityelite" },
+                { ig: "@summit_squad", tw: "@summitfc", fb: "summitelite" },
+                { ig: "@nova_sports", tw: "@novasports", fb: "novasports" },
+                { ig: "@metro_united", tw: "@metrounited", fb: "metrounited" }
+            ];
+            
+            const teamNames = [
+                "Metro Warriors", "Strikers Elite", "Apex Predators", "Future Legacy", "Thunder United", "Phoenix Rising", "Victory Giants", "Champions FC",
+                "Dynamo Dragons", "Titans Elite", "Olympus Eleven", "Velocity Vipers", "Summit Strikers", "Nova Blasters", "Royal Knights", "Blue Eagles"
+            ];
+            
+            return teamNames.map((name, idx) => ({
+                id: startIdx + idx,
+                category: catPrefix,
+                name: name,
+                logo: `images/teams/${name.toLowerCase().replace(/\s+/g, '_')}.png`,
+                school: schoolsList[idx % schoolsList.length],
+                social: socials[idx % socials.length]
+            }));
+        };
+        
+        const teamsCatalog = {
+            '05': generateTeamsForCat('05', 100),
+            '06': generateTeamsForCat('06', 200)
+        };
+        
+        let currentTeamCategory = '05';
+        
+        function renderTeams() {
+            const container = document.getElementById('teams-container');
+            if (!container) return;
+            const teamsList = teamsCatalog[currentTeamCategory];
+            
+            container.innerHTML = teamsList.map(team => `
+                <div class="team-card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
+                    <div class="p-6 flex flex-col items-center text-center border-b border-slate-100 bg-gradient-to-br from-white to-slate-50">
+                        <div class="w-28 h-28 rounded-full bg-intl-blue/10 flex items-center justify-center mb-4 p-2 ring-2 ring-intl-blue/20">
+                            <img src="${team.logo}" alt="${team.name}" class="w-20 h-20 rounded-full object-cover">
+                        </div>
+                        <h3 class="font-display font-black text-xl uppercase tracking-tight">${team.name}</h3>
+                        <div class="flex items-center gap-2 mt-1 text-xs font-bold text-intl-blue uppercase tracking-wider">
+                            <i class="fa-solid fa-graduation-cap"></i> <span>${team.school}</span>
+                        </div>
+                    </div>
+                    <div class="p-5 bg-white">
+                        <div class="flex justify-center gap-6 mt-2">
+                            <a href="https://instagram.com/${team.social.ig.replace('@','')}" target="_blank" class="social-icon text-slate-500 hover:text-intl-blue transition text-xl"><i class="fab fa-instagram"></i></a>
+                            <a href="https://twitter.com/${team.social.tw.replace('@','')}" target="_blank" class="social-icon text-slate-500 hover:text-intl-blue transition text-xl"><i class="fab fa-twitter"></i></a>
+                            <a href="https://facebook.com/${team.social.fb}" target="_blank" class="social-icon text-slate-500 hover:text-intl-blue transition text-xl"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="social-icon text-slate-500 hover:text-intl-blue transition text-xl"><i class="fab fa-tiktok"></i></a>
+                        </div>
+                        <div class="mt-5 pt-3 text-center text-[9px] font-black uppercase tracking-widest text-slate-400 border-t border-slate-100">
+                            <i class="fa-regular fa-futbol mr-1"></i> CAT '${team.category}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function switchTeamCategory(cat) {
+            currentTeamCategory = cat;
+            // Update button styles
+            document.getElementById('teamCatBtn05').classList.remove('bg-intl-blue', 'text-white', 'shadow-md');
+            document.getElementById('teamCatBtn05').classList.add('text-slate-600');
+            document.getElementById('teamCatBtn06').classList.remove('bg-intl-blue', 'text-white', 'shadow-md');
+            document.getElementById('teamCatBtn06').classList.add('text-slate-600');
+            const activeBtn = document.getElementById(`teamCatBtn${cat}`);
+            activeBtn.classList.add('bg-intl-blue', 'text-white', 'shadow-md');
+            activeBtn.classList.remove('text-slate-600');
+            renderTeams();
+        }
+        
+        // ----- EXISTING LOGIC (matches, standings, admin) preserved and integrated -----
+        let currentCategory = '05';
+        let isAdmin = false;
+        
+        let teams = [
+    { id: 1, cat: '05', group: 'A', name: "England", flag: "images/flags/england.png" },
+    { id: 2, cat: '05', group: 'A', name: "France", flag: "images/flags/france.png" },
+    { id: 3, cat: '05', group: 'B', name: "Brazil", flag: "images/flags/brazil.png" },
+    { id: 4, cat: '05', group: 'B', name: "Japan", flag: "images/flags/japan.png" },
+    { id: 5, cat: '05', group: 'C', name: "Argentina", flag: "images/flags/argentina.png" },
+    { id: 6, cat: '05', group: 'C', name: "Netherlands", flag: "images/flags/netherlands.png" },
+    { id: 7, cat: '05', group: 'D', name: "Germany", flag: "images/flags/germany.png" },
+    { id: 8, cat: '05', group: 'D', name: "Spain", flag: "images/flags/spain.png" },
+    { id: 9, cat: '06', group: 'A', name: "Portugal", flag: "images/flags/portugal.png" },
+    { id: 10, cat: '06', group: 'A', name: "Belgium", flag: "images/flags/belgium.png" },
+    { id: 11, cat: '06', group: 'B', name: "Croatia", flag: "images/flags/croatia.png" },
+    { id: 12, cat: '06', group: 'B', name: "Uruguay", flag: "images/flags/uruguay.png" },
+    { id: 13, cat: '06', group: 'C', name: "Morocco", flag: "images/flags/morocco.png" },
+    { id: 14, cat: '06', group: 'C', name: "Senegal", flag: "images/flags/senegal.png" },
+    { id: 15, cat: '06', group: 'D', name: "USA", flag: "images/flags/usa.png" },
+    { id: 16, cat: '06', group: 'D', name: "Mexico", flag: "images/flags/mexico.png" }
+];
+        
+        let matches = [
+    { id: 1, cat: '05', hId: 1, aId: 2, hS: 1, aS: 0, status: 'FT', time: '18:00' },
+    { id: 2, cat: '05', hId: 3, aId: 4, hS: null, aS: null, status: 'UPCOMING', time: '20:00' },
+    { id: 3, cat: '05', hId: 5, aId: 6, hS: 0, aS: 0, status: 'FT', time: '16:00' },
+    { id: 4, cat: '05', hId: 7, aId: 8, hS: null, aS: null, status: 'UPCOMING', time: '22:00' },
+    { id: 5, cat: '06', hId: 9, aId: 10, hS: 2, aS: 2, status: 'FT', time: '10:00' },
+    { id: 6, cat: '06', hId: 11, aId: 12, hS: null, aS: null, status: 'UPCOMING', time: '14:00' },
+    { id: 7, cat: '06', hId: 13, aId: 14, hS: 1, aS: 0, status: 'FT', time: '12:00' },
+    { id: 8, cat: '06', hId: 15, aId: 16, hS: null, aS: null, status: 'UPCOMING', time: '19:00' }
+];
+        
+        function navigateTo(pageId) {
+            document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
+            document.getElementById(`page-${pageId}`).classList.add('active');
+            document.querySelectorAll('.nav-link').forEach(link => { link.classList.toggle('nav-active', link.innerText.toLowerCase().trim() === pageId); });
+            window.scrollTo(0, 0);
+            if (pageId === 'matches') renderMatches();
+            if (pageId === 'standings') renderStandings();
+            if (pageId === 'teams') renderTeams();
+        }
+        
+        function toggleMobileMenu() { const menu = document.getElementById('mobile-menu'); menu.classList.toggle('active'); document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : 'auto'; }
+        function mobileNav(pageId) { toggleMobileMenu(); navigateTo(pageId); }
+        function switchCategory(cat, page) { currentCategory = cat; const prefix = page === 'matches' ? 'btn-m-' : 'btn-s-'; document.querySelectorAll(`.category-tab[id^="${prefix}"]`).forEach(b => b.classList.remove('active')); document.getElementById(prefix + cat).classList.add('active'); page === 'matches' ? renderMatches() : renderStandings(); }
+        
+        function renderMatches() { const container = document.getElementById('match-list'); const filtered = matches.filter(m => m.cat === currentCategory); container.innerHTML = filtered.map(m => { const h = teams.find(t => t.id === m.hId); const a = teams.find(t => t.id === m.aId); return `<div class="bg-white border border-slate-200 p-8 flex flex-col md:flex-row items-center gap-10 relative group">${isAdmin ? `<button onclick="openAdmin(${m.id})" class="absolute top-4 right-4 text-intl-blue opacity-0 group-hover:opacity-100 transition"><i class="fa-solid fa-pen-to-square"></i></button>` : ''}<div class="flex-1 flex items-center justify-end gap-6 w-full"><span class="text-2xl font-display font-black uppercase">${h.name}</span><img src="${h.flag}" class="w-12 h-8 object-cover shadow-sm"></div><div class="text-center px-10 border-x border-slate-100 min-w-[150px]"><div class="text-4xl font-display font-black italic tracking-tighter">${m.hS !== null ? m.hS : '-'} : ${m.aS !== null ? m.aS : '-'}</div><div class="text-[9px] font-black uppercase tracking-widest ${m.status==='LIVE'?'text-red-500':'text-slate-400'} mt-2">${m.status === 'FT' ? 'Full Time' : (m.status === 'LIVE' ? '● Live' : m.time)}</div></div><div class="flex-1 flex items-center justify-start gap-6 w-full"><img src="${a.flag}" class="w-12 h-8 object-cover shadow-sm"><span class="text-2xl font-display font-black uppercase">${a.name}</span></div></div>`; }).join('') || `<p class="text-center py-10 text-slate-400 uppercase font-bold text-xs">No matches scheduled.</p>`; }
+        
+        function renderStandings() { const grid = document.getElementById('standings-grid'); grid.innerHTML = ''; teams.forEach(t => { Object.assign(t, {p:0, w:0, d:0, l:0, gf:0, ga:0, pts:0}) }); matches.filter(m => m.status === 'FT').forEach(m => { const h = teams.find(t => t.id === m.hId), a = teams.find(t => t.id === m.aId); h.p++; a.p++; h.gf += m.hS; h.ga += m.aS; a.gf += m.aS; a.ga += m.hS; if (m.hS > m.aS) { h.w++; h.pts += 3; a.l++; } else if (m.hS < m.aS) { a.w++; a.pts += 3; h.l++; } else { h.d++; a.d++; h.pts += 1; a.pts += 1; } }); ['A', 'B', 'C', 'D'].forEach(group => { const groupTeams = teams.filter(t => t.cat === currentCategory && t.group === group).sort((a,b) => b.pts - a.pts || (b.gf - b.ga) - (a.gf - a.ga)); grid.innerHTML += `<div class="bg-white border border-slate-200 shadow-sm overflow-hidden"><div class="bg-intl-slate text-white px-6 py-4 flex justify-between items-center"><span class="font-display font-black uppercase italic tracking-widest text-sm">Group ${group}</span><span class="text-[9px] font-bold text-intl-gold uppercase tracking-widest">Cat '${currentCategory}</span></div><div class="overflow-x-auto"><table class="w-full text-left min-w-[500px]"><thead><tr class="bg-slate-50 border-b border-slate-200 text-[9px] font-black uppercase text-slate-400"><th class="px-6 py-4">Country</th><th class="px-2 py-4 text-center">P</th><th class="px-2 py-4 text-center">W</th><th class="px-2 py-4 text-center">D</th><th class="px-2 py-4 text-center">L</th><th class="px-2 py-4 text-center">GF</th><th class="px-2 py-4 text-center">GA</th><th class="px-2 py-4 text-center">GD</th><th class="px-6 py-4 text-center">Pts</th></tr></thead><tbody class="divide-y divide-slate-100">${groupTeams.map((t, i) => `<tr class="hover:bg-slate-50 transition"><td class="px-6 py-4 flex items-center gap-4 font-bold text-xs uppercase ${i < 2 ? 'border-l-4 border-intl-blue' : 'border-l-4 border-transparent'}"><img src="${t.flag}" class="w-6 h-4 object-cover"> ${t.name}</td><td class="px-2 py-4 text-center text-xs text-slate-400 font-bold">${t.p}</td><td class="px-2 py-4 text-center text-xs text-slate-400 font-bold">${t.w}</td><td class="px-2 py-4 text-center text-xs text-slate-400 font-bold">${t.d}</td><td class="px-2 py-4 text-center text-xs text-slate-400 font-bold">${t.l}</td><td class="px-2 py-4 text-center text-xs text-slate-400 font-bold">${t.gf}</td><td class="px-2 py-4 text-center text-xs text-slate-400 font-bold">${t.ga}</td><td class="px-2 py-4 text-center text-xs font-mono font-bold">${t.gf - t.ga}</td><td class="px-6 py-4 text-center font-display text-lg font-black text-intl-blue">${t.pts}</td></tr>`).join('')}</tbody></table></div></div>`; }); }
+        
+        function toggleAdmin() { if(prompt("Admin Access Code:") === "elite2026") { isAdmin = true; alert("Result Editing Enabled."); renderMatches(); } }
+        function openAdmin(id) { const m = matches.find(x => x.id === id); const h = teams.find(t => t.id === m.hId); const a = teams.find(t => t.id === m.aId); document.getElementById('match-id').value = id; document.getElementById('home-label').innerText = h.name; document.getElementById('away-label').innerText = a.name; document.getElementById('home-score').value = m.hS || 0; document.getElementById('away-score').value = m.aS || 0; document.getElementById('match-status').value = m.status; document.getElementById('admin-modal').classList.remove('hidden'); document.body.style.overflow = 'hidden'; }
+        function closeAdmin() { document.getElementById('admin-modal').classList.add('hidden'); document.body.style.overflow = 'auto'; }
+        function submitScore(e) { e.preventDefault(); const id = parseInt(document.getElementById('match-id').value); const m = matches.find(x => x.id === id); m.hS = parseInt(document.getElementById('home-score').value) || 0; m.aS = parseInt(document.getElementById('away-score').value) || 0; m.status = document.getElementById('match-status').value; renderMatches(); renderStandings(); closeAdmin(); }
+        
+        navigateTo('home');
+        renderTeams();
+    </script>
+</body>
+</html>
