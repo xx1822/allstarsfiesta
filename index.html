@@ -267,8 +267,8 @@
             <!-- Category Toggle -->
             <div class="flex justify-center mb-12">
                 <div class="inline-flex bg-slate-200 p-1 rounded-full shadow-sm">
-                    <button onclick="switchTeamCategory('05')" id="teamCatBtn05" class="team-cat-btn px-8 py-3 text-[11px] font-black uppercase tracking-widest rounded-full transition-all duration-200 bg-intl-blue text-white shadow-md">CAT '05</button>
-                    <button onclick="switchTeamCategory('06')" id="teamCatBtn06" class="team-cat-btn px-8 py-3 text-[11px] font-black uppercase tracking-widest rounded-full transition-all duration-200 text-slate-600 hover:bg-slate-100">CAT '06</button>
+                    <button onclick="switchTeamCategory('05')" id="teamCatBtn05" class="team-cat-btn px-8 py-3 text-[11px] font-black uppercase tracking-widest rounded-full transition-all duration-200 bg-intl-blue text-white shadow-md">ASF '05</button>
+                    <button onclick="switchTeamCategory('06')" id="teamCatBtn06" class="team-cat-btn px-8 py-3 text-[11px] font-black uppercase tracking-widest rounded-full transition-all duration-200 text-slate-600 hover:bg-slate-100">ASF '06</button>
                 </div>
             </div>
 
@@ -328,102 +328,124 @@
 
     <script>
         // ---------- TEAMS DATA (16 per category) with logos, school names, social media handles ----------
-        const generateTeamsForCat = (catPrefix, startIdx) => {
-            const schoolsList = [
-                "Metro United Academy", "Elite Sports College", "Strikers Institute", "Future Stars HS", "Apex Football School", "Legacy Prep", "Thunderbolt Academy", "Phoenix Sports School",
-                "Victory International", "Champions Academy", "Dynamo Youth Centre", "Rising Titans HS", "Olympus Football", "Velocity Institute", "Summit Elite", "Nova Sports College"
-            ];
-            const socials = [
-                { ig: "@elite_fc", tw: "@elitefc", fb: "elitefootball" },
-                { ig: "@strikers_official", tw: "@strikersfc", fb: "strikersacademy" },
-                { ig: "@apex_squad", tw: "@apexfc", fb: "apexfootball" },
-                { ig: "@futurestars_my", tw: "@futurestars", fb: "futurestars" },
-                { ig: "@legacy_united", tw: "@legacyunited", fb: "legacyunited" },
-                { ig: "@thunderbolt_fc", tw: "@thunderbolt", fb: "thunderboltacademy" },
-                { ig: "@phoenix_sports", tw: "@phoenixfc", fb: "phoenixsports" },
-                { ig: "@victory_intl", tw: "@victoryintl", fb: "victoryintl" },
-                { ig: "@champions_acad", tw: "@champions", fb: "championsacademy" },
-                { ig: "@dynamo_youth", tw: "@dynamo", fb: "dynamoyouth" },
-                { ig: "@rising_titans", tw: "@risingtitans", fb: "risingtitans" },
-                { ig: "@olympus_fc", tw: "@olympus", fb: "olympusfc" },
-                { ig: "@velocity_elite", tw: "@velocity", fb: "velocityelite" },
-                { ig: "@summit_squad", tw: "@summitfc", fb: "summitelite" },
-                { ig: "@nova_sports", tw: "@novasports", fb: "novasports" },
-                { ig: "@metro_united", tw: "@metrounited", fb: "metrounited" }
-            ];
-            
-            const teamNames = [
-                "Metro Warriors", "Strikers Elite", "Apex Predators", "Future Legacy", "Thunder United", "Phoenix Rising", "Victory Giants", "Champions FC",
-                "Dynamo Dragons", "Titans Elite", "Olympus Eleven", "Velocity Vipers", "Summit Strikers", "Nova Blasters", "Royal Knights", "Blue Eagles"
-            ];
-            
-            return teamNames.map((name, idx) => ({
-                id: startIdx + idx,
-                category: catPrefix,
-                name: name,
-                logo: `images/teams/${name.toLowerCase().replace(/\s+/g, '_')}.png`,
-                school: schoolsList[idx % schoolsList.length],
-                social: socials[idx % socials.length]
-            }));
-        };
-        
-        const teamsCatalog = {
-            '05': generateTeamsForCat('05', 100),
-            '06': generateTeamsForCat('06', 200)
-        };
-        
-        let currentTeamCategory = '05';
-        
-        function renderTeams() {
-            const container = document.getElementById('teams-container');
-            if (!container) return;
-            const teamsList = teamsCatalog[currentTeamCategory];
-            
-            container.innerHTML = teamsList.map(team => `
-                <div class="team-card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
-                    <div class="p-6 flex flex-col items-center text-center border-b border-slate-100 bg-gradient-to-br from-white to-slate-50">
-                        <div class="w-28 h-28 rounded-full bg-intl-blue/10 flex items-center justify-center mb-4 p-2 ring-2 ring-intl-blue/20">
-                            <img src="${team.logo}" alt="${team.name}" class="w-20 h-20 rounded-full object-cover">
-                        </div>
-                        <h3 class="font-display font-black text-xl uppercase tracking-tight">${team.name}</h3>
-                        <div class="flex items-center gap-2 mt-1 text-xs font-bold text-intl-blue uppercase tracking-wider">
-                            <i class="fa-solid fa-graduation-cap"></i> <span>${team.school}</span>
-                        </div>
-                    </div>
-                    <div class="p-5 bg-white">
-                        <div class="flex justify-center gap-6 mt-2">
-                            <a href="https://instagram.com/${team.social.ig.replace('@','')}" target="_blank" class="social-icon text-slate-500 hover:text-intl-blue transition text-xl"><i class="fab fa-instagram"></i></a>
-                            <a href="https://twitter.com/${team.social.tw.replace('@','')}" target="_blank" class="social-icon text-slate-500 hover:text-intl-blue transition text-xl"><i class="fab fa-twitter"></i></a>
-                            <a href="https://facebook.com/${team.social.fb}" target="_blank" class="social-icon text-slate-500 hover:text-intl-blue transition text-xl"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#" class="social-icon text-slate-500 hover:text-intl-blue transition text-xl"><i class="fab fa-tiktok"></i></a>
-                        </div>
-                        <div class="mt-5 pt-3 text-center text-[9px] font-black uppercase tracking-widest text-slate-400 border-t border-slate-100">
-                            <i class="fa-regular fa-futbol mr-1"></i> CAT '${team.category}
-                        </div>
-                    </div>
+// ---------- TEAMS DATA (16 per category) with logos, school names, social media handles ----------
+const generateTeamsForCat05 = () => {
+    const teamsData05 = [
+        { name: "CATHAR FC", logo: "ASF5-01 - CATHAR FC.png", school: "MRSM TUN DR. ISMAIL", ig: "", tw: "", fb: "" },
+        { name: "MAESTROS XI", logo: "ASF5-02 - MAESTROS XI.png", school: "MRSM SULTAN AZLAN SHAH", ig: "", tw: "", fb: "" },
+        { name: "STRINEX XII", logo: "ASF5-03 - STRINEX XII.png", school: "MRSM KUBANG PASU", ig: "", tw: "", fb: "" },
+        { name: "PABLO FC", logo: "ASF5-04 - PABLO FC.png", school: "MRSM FELDA TROLAK", ig: "", tw: "", fb: "" },
+        { name: "PC TROOPERS", logo: "ASF5-05 - PC TROOPERS.png", school: "MRSM PENGKALAN CHEPA", ig: "", tw: "", fb: "" },
+        { name: "VICTOBROS FC", logo: "ASF5-06 - VICTOBROS FC.png", school: "SMS SELANGOR", ig: "", tw: "", fb: "" },
+        { name: "XEFORANZ FC", logo: "ASF5-07 - XEFORANZ FC.png", school: "SMS HULU TERENGGANU", ig: "", tw: "", fb: "" },
+        { name: "DRAVENCORES FC", logo: "ASF5-08 - DRAVENCORES FC.png", school: "INTEGOMBA - SBPI GOMBAK", ig: "", tw: "", fb: "" },
+        { name: "UVIICY FC", logo: "ASF5-09 - UVIICY FC.png", school: "KASEH - SMS BATU PAHAT", ig: "", tw: "", fb: "" },
+        { name: "LXII BROS", logo: "ASF5-10 - LXII BROS.png", school: "STAROBA - SEKOLAH TUANKU ABDUL RAHMAN", ig: "", tw: "", fb: "" },
+        { name: "ETLUSZ CALCIO", logo: "ASF5-11 - ETLUSZ CALCIO.png", school: "SBPI RAWANG", ig: "", tw: "", fb: "" },
+        { name: "ZIA FC", logo: "ASF5-12 - ZIA FC.png", school: "SASEMOB - SMS SEMBRONG", ig: "", tw: "", fb: "" },
+        { name: "REVO ", logo: "ASF5-13 - REVO.png", school: "SDARA - SEKOLAH DATO ABDUL RAZAK", ig: "", tw: "", fb: "" },
+        { name: "ARCEUSS FC", logo: "ASF5-14 - ARCEUSS FC.png", school: "ALKIS - KOLEJ ISLAM SULTAN ALAM SHAH", ig: "", tw: "", fb: "" },
+        { name: "MAGNUS FT", logo: "ASF5-15 - MAGNUS FT.jpeg", school: "SMAP BENTONG", ig: "", tw: "", fb: "" },
+        { name: "XANTHRONS FC", logo: "ASF5-16 - XANTHRONS FC.png", school: "SASEROBA - SMS TUANKU MUNAWIR", ig: "", tw: "", fb: "" }
+    ];
+    
+    return teamsData05.map((team, idx) => ({
+        id: 100 + idx,
+        category: '05',
+        name: team.name,
+        logo: `images/ASF5/${team.logo}`,
+        school: team.school,
+        social: { ig: team.ig, tw: team.tw, fb: team.fb }
+    }));
+};
+
+const generateTeamsForCat06 = () => {
+    const teamsData06 = [
+        { name: "PARAMESWARA FC", logo: "ASF6-01 - PARAMESWARA FC.png", school: "MRSM GERIK", ig: "", tw: "", fb: "" },
+        { name: "INERCIA FC", logo: "ASF6-02 - INERCIA FC.jpg", school: "MRSM SULTAN AZLAN SHAH", ig: "", tw: "", fb: "" },
+        { name: "VARSITY FC", logo: "ASF6-03 - VARSITY FC.jpg", school: "MRSM PDRM KULIM", ig: "", tw: "", fb: "" },
+        { name: "SAGRADA FC", logo: "ASF6-04 - SAGRADA FC.png", school: "MRSM FELDA TROLAK", ig: "", tw: "", fb: "" },
+        { name: "FT", logo: "ASF6-05 - FT.png", school: "MRSM BESUT", ig: "", tw: "", fb: "" },
+        { name: "KAYANGAN FC", logo: "ASF6-06 - KAYANGAN FC.png", school: "KASEH - SMS BATU PAHAT", ig: "", tw: "", fb: "" },
+        { name: "LYKOS UNITED", logo: "ASF6-07 - LYKOS UNITED.jpg", school: "OPA - ROYAL MILITARY COLLEGE", ig: "", tw: "", fb: "" },
+        { name: "VIGOURAWR FC", logo: "ASF6-08 - VIGOURAWR FC.jpg", school: "PRESSTIJ - SMS TUANKU JAAFAR", ig: "", tw: "", fb: "" },
+        { name: "SOBBA FC", logo: "ASF6-09 - SOBBA FC.png", school: "ANNADI - SMAP KAJANG", ig: "", tw: "", fb: "" },
+        { name: "STARA FC", logo: "ASF6-10 - STARA FC.jpg", school: "STAROBA - SEKOLAH TUANKU ABDUL RAHMAN", ig: "", tw: "", fb: "" },
+        { name: "WRSFTBL", logo: "ASF6-11 - WRSFTBL.jpg", school: "ASAS - SEKOLAH SULTAN ALAM SHAH", ig: "", tw: "", fb: "" },
+        { name: "EX FC", logo: "ASF6-12 - EX FC.png", school: "MOZACIANS - SMS MUZAFFAR SYAH", ig: "", tw: "", fb: "" },
+        { name: "SATURN FC", logo: "ASF6-13 - SATURN FC.png", school: "ASTI - SMS TELUK INTAN", ig: "", tw: "", fb: "" },
+        { name: "CARRIE SENIOR", logo: "ASF6-14 - CARRIE SENIOR.png", school: "INTEGOMBA - SBPI GOMBAK", ig: "", tw: "", fb: "" },
+        { name: "SIG FT", logo: "ASF6-15 - SIG FT.jpg", school: "SAJOHA - SMS JOHOR", ig: "", tw: "", fb: "" },
+        { name: "ASTRIXX", logo: "starlight_academy.png", school: "SASEROBA - SMS TUANKU MUNAWIR", ig: "", tw: "", fb: "" }
+    ];
+    
+    return teamsData06.map((team, idx) => ({
+        id: 200 + idx,
+        category: '06',
+        name: team.name,
+        logo: `images/ASF6/${team.logo}`,
+        school: team.school,
+        social: { ig: team.ig, tw: team.tw, fb: team.fb }
+    }));
+};
+
+const teamsCatalog = {
+    '05': generateTeamsForCat05(),
+    '06': generateTeamsForCat06()
+};
+
+let currentTeamCategory = '05';
+
+function renderTeams() {
+    const container = document.getElementById('teams-container');
+    if (!container) return;
+    const teamsList = teamsCatalog[currentTeamCategory];
+    
+    container.innerHTML = teamsList.map(team => `
+        <div class="team-card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
+            <div class="p-6 flex flex-col items-center text-center border-b border-slate-100 bg-gradient-to-br from-white to-slate-50">
+                <div class="w-28 h-28 rounded-full bg-intl-blue/10 flex items-center justify-center mb-4 p-2 ring-2 ring-intl-blue/20">
+                    <img src="${team.logo}" alt="${team.name}" class="w-20 h-20 rounded-full object-cover" onerror="this.src='https://ui-avatars.com/api/?background=0015ff&color=fff&rounded=true&bold=true&size=100&fontsize=0.40&name=${encodeURIComponent(team.name.substring(0,2))}'">
                 </div>
-            `).join('');
-        }
-        
-        function switchTeamCategory(cat) {
-            currentTeamCategory = cat;
-            // Update button styles
-            document.getElementById('teamCatBtn05').classList.remove('bg-intl-blue', 'text-white', 'shadow-md');
-            document.getElementById('teamCatBtn05').classList.add('text-slate-600');
-            document.getElementById('teamCatBtn06').classList.remove('bg-intl-blue', 'text-white', 'shadow-md');
-            document.getElementById('teamCatBtn06').classList.add('text-slate-600');
-            const activeBtn = document.getElementById(`teamCatBtn${cat}`);
-            activeBtn.classList.add('bg-intl-blue', 'text-white', 'shadow-md');
-            activeBtn.classList.remove('text-slate-600');
-            renderTeams();
-        }
+                <h3 class="font-display font-black text-xl uppercase tracking-tight">${team.name}</h3>
+
+            </div>
+            <div class="p-5 bg-white">
+                <div class="flex justify-center gap-6 mt-2">
+				        <div class="flex items-center gap-2 mt-1 text-xs font-bold text-intl-blue uppercase tracking-wider">
+							<i class="fa-solid fa-graduation-cap"></i> <span>${team.school}</span>
+							<a href="https://instagram.com/${team.social.ig.replace('@','')}" target="_blank" class="social-icon text-slate-500 hover:text-intl-blue transition text-xl"><i class="fab fa-instagram"></i></a>
+						</div>
+                    <!--<a href="https://twitter.com/${team.social.tw.replace('@','')}" target="_blank" class="social-icon text-slate-500 hover:text-intl-blue transition text-xl"><i class="fab fa-twitter"></i></a>-->
+                    <!--<a href="https://facebook.com/${team.social.fb}" target="_blank" class="social-icon text-slate-500 hover:text-intl-blue transition text-xl"><i class="fab fa-facebook-f"></i></a>-->
+                    <!--<a href="#" class="social-icon text-slate-500 hover:text-intl-blue transition text-xl"><i class="fab fa-tiktok"></i></a>-->
+                </div>
+                <div class="mt-5 pt-3 text-center text-[9px] font-black uppercase tracking-widest text-slate-400 border-t border-slate-100">
+                    <i class="fa-regular fa-futbol mr-1"></i> ASF '${team.category}
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function switchTeamCategory(cat) {
+    currentTeamCategory = cat;
+    document.getElementById('teamCatBtn05').classList.remove('bg-intl-blue', 'text-white', 'shadow-md');
+    document.getElementById('teamCatBtn05').classList.add('text-slate-600');
+    document.getElementById('teamCatBtn06').classList.remove('bg-intl-blue', 'text-white', 'shadow-md');
+    document.getElementById('teamCatBtn06').classList.add('text-slate-600');
+    const activeBtn = document.getElementById(`teamCatBtn${cat}`);
+    activeBtn.classList.add('bg-intl-blue', 'text-white', 'shadow-md');
+    activeBtn.classList.remove('text-slate-600');
+    renderTeams();
+}
         
         // ----- EXISTING LOGIC (matches, standings, admin) preserved and integrated -----
         let currentCategory = '05';
         let isAdmin = false;
         
         let teams = [
-    { id: 1, cat: '05', group: 'A', name: "England", flag: "images/flags/england.png" },
+    { id: 1, cat: '05', group: 'A', name: "England", flag: "images/ASF6/CATHAR FC.png" },
     { id: 2, cat: '05', group: 'A', name: "France", flag: "images/flags/france.png" },
     { id: 3, cat: '05', group: 'B', name: "Brazil", flag: "images/flags/brazil.png" },
     { id: 4, cat: '05', group: 'B', name: "Japan", flag: "images/flags/japan.png" },
