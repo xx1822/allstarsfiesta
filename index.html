@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>ASF2026 | Official - Teams Hub</title>
+    <title>ASF2026 | Official</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -55,23 +55,41 @@
             background: #000;
         }
 
-        .animate-slide {
-            display: flex;
-            width: 400%;
-            height: 100%;
-            animation: slide-cycle 20s infinite cubic-bezier(0.85, 0, 0.15, 1);
-        }
+.animate-slide {
+    display: flex;
+    width: 1200%;  /* Changed from 400% to 1200% (12 slides × 100%) */
+    height: 100%;
+    animation: slide-cycle 60s infinite cubic-bezier(0.85, 0, 0.15, 1);
+}
 
-        .slide-item { width: 25%; height: 100%; position: relative; flex-shrink: 0; }
-        .slide-item img { width: 100% !important; height: 100% !important; object-fit: cover !important; }
+.slide-item { 
+    width: 8.333%;  /* Changed from 25% to 8.333% (100% ÷ 12 slides) */
+    height: 100%; 
+    position: relative; 
+    flex-shrink: 0; 
+}
 
-        @keyframes slide-cycle {
-            0%, 20% { transform: translateX(0); }
-            25%, 45% { transform: translateX(-25%); }
-            50%, 70% { transform: translateX(-50%); }
-            75%, 95% { transform: translateX(-75%); }
-            100% { transform: translateX(0); }
-        }
+.slide-item img { 
+    width: 100% !important; 
+    height: 100% !important; 
+    object-fit: cover !important; 
+}
+
+@keyframes slide-cycle {
+    0%, 7% { transform: translateX(0); }              /* Slide 1 */
+    8.33%, 15.33% { transform: translateX(-8.33%); } /* Slide 2 */
+    16.66%, 23.66% { transform: translateX(-16.66%); } /* Slide 3 */
+    25%, 32% { transform: translateX(-25%); }        /* Slide 4 */
+    33.33%, 40.33% { transform: translateX(-33.33%); } /* Slide 5 */
+    41.66%, 48.66% { transform: translateX(-41.66%); } /* Slide 6 */
+    50%, 57% { transform: translateX(-50%); }        /* Slide 7 */
+    58.33%, 65.33% { transform: translateX(-58.33%); } /* Slide 8 */
+    66.66%, 73.66% { transform: translateX(-66.66%); } /* Slide 9 */
+    75%, 82% { transform: translateX(-75%); }        /* Slide 10 */
+    83.33%, 90.33% { transform: translateX(-83.33%); } /* Slide 11 */
+    91.66%, 98.66% { transform: translateX(-91.66%); } /* Slide 12 */
+    100% { transform: translateX(0); }
+}
     
         /* Mobile Navigation */
         #mobile-menu {
@@ -134,8 +152,8 @@
             
             <div class="hidden lg:flex space-x-10 text-[11px] font-black uppercase tracking-widest">
                 <button onclick="navigateTo('home')" class="nav-link py-7 hover:text-intl-blue transition">Home</button>
-                <button onclick="navigateTo('standings')" class="nav-link py-7 hover:text-intl-blue transition">Standings</button>
-                <button onclick="navigateTo('matches')" class="nav-link py-7 hover:text-intl-blue transition">Matches</button>
+                <!--<button onclick="navigateTo('standings')" class="nav-link py-7 hover:text-intl-blue transition">Standings</button>-->
+                <!--<button onclick="navigateTo('matches')" class="nav-link py-7 hover:text-intl-blue transition">Matches</button>-->
                 <button onclick="navigateTo('teams')" class="nav-link py-7 hover:text-intl-blue transition">Teams</button>
                 <button onclick="navigateTo('organiser')" class="nav-link py-7 hover:text-intl-blue transition">Organiser</button>
             </div>
@@ -151,8 +169,8 @@
             </div>
             <div class="flex flex-col gap-8 px-8 bg-intl-blue/95 text-white text-4xl font-display font-black uppercase italic tracking-tighter">
                 <button onclick="mobileNav('home')" class="text-left border-b border-white/10 pb-4">Home</button>
-                <button onclick="mobileNav('standings')" class="text-left border-b border-white/10 pb-4">Standings</button>
-                <button onclick="mobileNav('matches')" class="text-left border-b border-white/10 pb-4">Matches</button>
+                <!--<button onclick="mobileNav('standings')" class="text-left border-b border-white/10 pb-4">Standings</button>-->
+                <!--<button onclick="mobileNav('matches')" class="text-left border-b border-white/10 pb-4">Matches</button>-->
                 <button onclick="mobileNav('teams')" class="text-left border-b border-white/10 pb-4">Teams</button>
                 <button onclick="mobileNav('organiser')" class="text-left border-b border-white/10 pb-4">Organiser</button>
             </div>
@@ -161,20 +179,20 @@
 
     <!-- HOME PAGE (existing content) -->
     <main id="page-home" class="page-view active">
-        <section class="hero-mesh py-20 border-b border-slate-200 bg-white">
-            <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                <div>
-                    <h1 class="text-7xl md:text-9xl font-display font-black leading-none mb-8">FOR THE <br><span class="text-intl-blue">PRIDE.</span></h1>
-                    <p class="text-xl text-slate-500 max-w-md mb-10 leading-relaxed">The pinnacle of SBP-MRSM youth football. Category '05 and '06 Elite Rounds.</p>
-                    <button onclick="navigateTo('matches')" class="bg-intl-slate text-white px-10 py-5 font-bold uppercase text-xs tracking-widest hover:bg-intl-blue transition">View Match Day</button>
-                </div>
-                <div class="relative">
-                    <div class="aspect-video w-full overflow-hidden shadow-2xl">
-                        <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=1200" class="w-full h-full object-cover grayscale hover:grayscale-0 transition duration-700" alt="Hero">
-                    </div>
-                </div>
+<section class="hero-mesh py-20 border-b border-slate-200 bg-white">
+    <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div>
+            <h1 class="text-7xl md:text-9xl font-display font-black leading-none mb-8">FOR THE <br><span class="text-intl-blue">PRIDE.</span></h1>
+            <p class="text-xl text-slate-500 max-w-md mb-10 leading-relaxed">The pinnacle of SBP-MRSM youth football. Category '05 and '06 Elite Rounds.</p>
+            <button onclick="navigateTo('teams')" class="bg-intl-slate text-white px-10 py-5 font-bold uppercase text-xs tracking-widest hover:bg-intl-blue transition">View Teams</button>
+        </div>
+        <div class="relative">
+            <div class="aspect-video w-full overflow-hidden shadow-2xl bg-slate-900">
+                <img src="images/assets/1.png" class="w-full h-full object-cover hover:scale-105 transition duration-700" alt="Hero">
             </div>
-        </section>
+        </div>
+    </div>
+</section>
 	
 		<!-- Sponsor Section (global footer) -->
     <section class="py-20 bg-slate-50 border-t border-slate-200">
@@ -184,37 +202,37 @@
                 <!-- Partner 1 -->
                 <a href="https://tinyurl.com/jp-ASF2026" class="bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 p-8 flex flex-col items-center justify-center group no-underline">
                     <div class="w-24 h-24 mb-4 flex items-center justify-center">
-                        <img src="images/partners/nike.png" alt="Nike" class="max-w-full max-h-full object-contain opacity-60 group-hover:opacity-100 transition-all duration-300" onerror="this.src='https://placehold.co/100x100/e2e8f0/475569?text=NIKE'">
+                        <img src="images/assets/PEJABAT EXCO.png" alt="Nike" class="max-w-full max-h-full object-contain opacity-60 group-hover:opacity-100 transition-all duration-300" onerror="this.src='https://placehold.co/100x100/e2e8f0/475569?text=NIKE'">
                     </div>
-                    <h3 class="font-display font-black text-lg uppercase tracking-tight text-slate-700 group-hover:text-intl-blue transition-colors">Nike</h3>
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mt-1">Official Kit Sponsor</p>
+                    <h3 class="font-display font-black text-lg uppercase tracking-tight text-slate-700 group-hover:text-intl-blue transition-colors">EXCO Belia, Sukan & Keusahawanan</h3>
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mt-1">Negeri Selangor</p>
                 </a>
 
                 <!-- Partner 2 -->
                 <a href="#" class="bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 p-8 flex flex-col items-center justify-center group no-underline">
                     <div class="w-24 h-24 mb-4 flex items-center justify-center">
-                        <img src="images/partners/adidas.png" alt="Adidas" class="max-w-full max-h-full object-contain opacity-60 group-hover:opacity-100 transition-all duration-300" onerror="this.src='https://placehold.co/100x100/e2e8f0/475569?text=ADIDAS'">
+                        <img src="images/assets/SASERCO FC.png" alt="Adidas" class="max-w-full max-h-full object-contain opacity-60 group-hover:opacity-100 transition-all duration-300" onerror="this.src='https://placehold.co/100x100/e2e8f0/475569?text=ADIDAS'">
                     </div>
-                    <h3 class="font-display font-black text-lg uppercase tracking-tight text-slate-700 group-hover:text-intl-blue transition-colors">Adidas</h3>
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mt-1">Official Ball Supplier</p>
+                    <h3 class="font-display font-black text-lg uppercase tracking-tight text-slate-700 group-hover:text-intl-blue transition-colors">SASERCO FC</h3>
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mt-1">Organiser</p>
                 </a>
 
                 <!-- Partner 3 -->
                 <a href="#" class="bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 p-8 flex flex-col items-center justify-center group no-underline">
-                    <div class="w-24 h-24 mb-4 flex items-center justify-center">
-                        <img src="images/partners/redbull.png" alt="Red Bull" class="max-w-full max-h-full object-contain opacity-60 group-hover:opacity-100 transition-all duration-300" onerror="this.src='https://placehold.co/100x100/e2e8f0/475569?text=REDBULL'">
+                    <div class="w-48 h-24 mb-4 flex items-center justify-center">
+                        <img src="images/assets/TT.png" alt="Red Bull" class="max-w-full max-h-full object-contain opacity-60 group-hover:opacity-100 transition-all duration-300" onerror="this.src='https://placehold.co/100x100/e2e8f0/475569?text=REDBULL'">
                     </div>
-                    <h3 class="font-display font-black text-lg uppercase tracking-tight text-slate-700 group-hover:text-intl-blue transition-colors">Red Bull</h3>
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mt-1">Energy Drink Partner</p>
+                    <h3 class="font-display font-black text-lg uppercase tracking-tight text-slate-700 group-hover:text-intl-blue transition-colors">TT Associates</h3>
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mt-1">Event Manager</p>
                 </a>
 
                 <!-- Partner 4 -->
                 <a href="#" class="bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 p-8 flex flex-col items-center justify-center group no-underline">
-                    <div class="w-24 h-24 mb-4 flex items-center justify-center">
-                        <img src="images/partners/coca_cola.png" alt="Coca-Cola" class="max-w-full max-h-full object-contain opacity-60 group-hover:opacity-100 transition-all duration-300" onerror="this.src='https://placehold.co/100x100/e2e8f0/475569?text=COCA-COLA'">
+                    <div class="w-48 h-24 mb-4 flex items-center justify-center">
+                        <img src="images/assets/BIYA MMU.png" alt="Coca-Cola" class="max-w-full max-h-full object-contain opacity-60 group-hover:opacity-100 transition-all duration-300" onerror="this.src='https://placehold.co/100x100/e2e8f0/475569?text=COCA-COLA'">
                     </div>
-                    <h3 class="font-display font-black text-lg uppercase tracking-tight text-slate-700 group-hover:text-intl-blue transition-colors">Coca-Cola</h3>
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mt-1">Official Beverage</p>
+                    <h3 class="font-display font-black text-lg uppercase tracking-tight text-slate-700 group-hover:text-intl-blue transition-colors">BIYA MMU</h3>
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mt-1">In Collaboration with</p>
                 </a>
             </div>
         </div>
@@ -232,8 +250,8 @@
                     <div class="p-8 border-l-4 border-intl-slate bg-intl-light">
                         <div class="text-intl-slate mb-4 text-2xl"><i class="fa-solid fa-location-dot"></i></div>
                         <h3 class="font-display font-black uppercase text-sm tracking-widest mb-2">Venue</h3>
-                        <p class="text-2xl font-bold tracking-tighter italic uppercase">Synthetic Field <br>Section 28</p>
-                        <p class="text-[10px] text-slate-400 mt-2 font-bold uppercase">Shah Alam City Council</p>
+                        <p class="text-2xl font-bold tracking-tighter italic uppercase">AG Sports Arena</p>
+                        <p class="text-[10px] text-slate-400 mt-2 font-bold uppercase">Persiaran MARDI - UPM</p>
                     </div>
                     <div class="p-8 border-l-4 border-intl-gold bg-intl-light">
                         <div class="text-intl-gold mb-4 text-2xl"><i class="fa-solid fa-trophy"></i></div>
@@ -244,28 +262,36 @@
                     <div class="p-8 border-l-4 border-slate-300 bg-intl-light">
                         <div class="text-slate-400 mb-4 text-2xl"><i class="fa-solid fa-ticket"></i></div>
                         <h3 class="font-display font-black uppercase text-sm tracking-widest mb-2">Participation Fee</h3>
-                        <p class="text-2xl font-bold tracking-tighter italic uppercase">RM950 <br>Per Team</p>
-                        <p class="text-[10px] text-slate-400 mt-2 font-bold uppercase">Enjoy 9 benefits included</p>
+                        <p class="text-2xl font-bold tracking-tighter italic uppercase">11 <br>Benefits</p>
+                        <p class="text-[10px] text-slate-400 mt-2 font-bold uppercase">Included to Enjoy!</p>
                     </div>
                 </div>
-                <div class="mt-12 flex flex-wrap gap-8 justify-center border-t border-slate-100 pt-10">
+                <!--<div class="mt-12 flex flex-wrap gap-8 justify-center border-t border-slate-100 pt-10">
                     <div class="flex items-center gap-3"><span class="w-2 h-2 bg-intl-blue rounded-full"></span><span class="text-[10px] font-black uppercase tracking-widest text-slate-500">FIFA Approved Refs</span></div>
                     <div class="flex items-center gap-3"><span class="w-2 h-2 bg-intl-blue rounded-full"></span><span class="text-[10px] font-black uppercase tracking-widest text-slate-500">VAR Technology</span></div>
                     <div class="flex items-center gap-3"><span class="w-2 h-2 bg-intl-blue rounded-full"></span><span class="text-[10px] font-black uppercase tracking-widest text-slate-500">UHD Global Broadcast</span></div>
                     <div class="flex items-center gap-3"><span class="w-2 h-2 bg-intl-blue rounded-full"></span><span class="text-[10px] font-black uppercase tracking-widest text-slate-500">Anti-Doping Compliant</span></div>
-                </div>
+                </div>-->
             </div>
         </section>
 
-        <section class="py-20 bg-white">
+        <section class="py-20">
             <div class="max-w-7xl mx-auto px-6 text-center">
                 <h2 class="text-[10px] font-black tracking-[0.5em] uppercase text-intl-blue mb-10">Exclusive Tournament Gallery</h2>
                 <div class="gallery-stage shadow-[0_20px_50px_rgba(0,21,255,0.2)]">
                     <div class="animate-slide">
-                        <div class="slide-item"><img src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=1200" alt="Slide 1"><div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div><div class="absolute bottom-10 left-10 text-left text-white"><span class="text-[9px] font-bold tracking-[0.3em] text-intl-gold uppercase">Stage 01</span><h4 class="text-3xl font-display font-black italic uppercase">Opening Ceremony</h4></div></div>
-                        <div class="slide-item"><img src="https://images.unsplash.com/photo-1518091043644-c1d4457512c6?q=80&w=1200" alt="Slide 2"><div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div><div class="absolute bottom-10 left-10 text-left text-white"><span class="text-[9px] font-bold tracking-[0.3em] text-intl-gold uppercase">Stage 02</span><h4 class="text-3xl font-display font-black italic uppercase">The Grand Stadium</h4></div></div>
-                        <div class="slide-item"><img src="https://images.unsplash.com/photo-1551958219-acbc608c6377?q=80&w=1200" alt="Slide 3"><div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div><div class="absolute bottom-10 left-10 text-left text-white"><span class="text-[9px] font-bold tracking-[0.3em] text-intl-gold uppercase">Stage 03</span><h4 class="text-3xl font-display font-black italic uppercase">Team Arrival</h4></div></div>
-                        <div class="slide-item"><img src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=1200" alt="Slide 1 Clone"></div>
+                        <div class="slide-item"><img src="images/assets/lens/1.jpg" alt="Slide 1"><div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div><div class="absolute bottom-10 left-10 text-left text-white"><!--<span class="text-[9px] font-bold tracking-[0.3em] text-intl-gold uppercase">Stage 01</span><h4 class="text-3xl font-display font-black italic uppercase">Opening Ceremony</h4>--></div></div>
+                        <div class="slide-item"><img src="images/assets/lens/2.jpg" alt="Slide 2"><div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div><div class="absolute bottom-10 left-10 text-left text-white"><!--<span class="text-[9px] font-bold tracking-[0.3em] text-intl-gold uppercase">Stage 02</span><h4 class="text-3xl font-display font-black italic uppercase">The Grand Stadium</h4>--></div></div>
+                        <div class="slide-item"><img src="images/assets/lens/3.jpg" alt="Slide 3"><div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div><div class="absolute bottom-10 left-10 text-left text-white"><!--<span class="text-[9px] font-bold tracking-[0.3em] text-intl-gold uppercase">Stage 03</span><h4 class="text-3xl font-display font-black italic uppercase">Team Arrival</h4>--></div></div>
+						<div class="slide-item"><img src="images/assets/lens/4.jpg" alt="Slide 1"><div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div><div class="absolute bottom-10 left-10 text-left text-white"><!--<span class="text-[9px] font-bold tracking-[0.3em] text-intl-gold uppercase">Stage 01</span><h4 class="text-3xl font-display font-black italic uppercase">Opening Ceremony</h4>--></div></div>
+                        <div class="slide-item"><img src="images/assets/lens/5.jpg" alt="Slide 2"><div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div><div class="absolute bottom-10 left-10 text-left text-white"><!--<span class="text-[9px] font-bold tracking-[0.3em] text-intl-gold uppercase">Stage 02</span><h4 class="text-3xl font-display font-black italic uppercase">The Grand Stadium</h4>--></div></div>
+                        <div class="slide-item"><img src="images/assets/lens/6.jpg" alt="Slide 3"><div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div><div class="absolute bottom-10 left-10 text-left text-white"><!--<span class="text-[9px] font-bold tracking-[0.3em] text-intl-gold uppercase">Stage 03</span><h4 class="text-3xl font-display font-black italic uppercase">Team Arrival</h4>--></div></div>
+                        <div class="slide-item"><img src="images/assets/lens/7.jpg" alt="Slide 1"><div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div><div class="absolute bottom-10 left-10 text-left text-white"><!--<span class="text-[9px] font-bold tracking-[0.3em] text-intl-gold uppercase">Stage 01</span><h4 class="text-3xl font-display font-black italic uppercase">Opening Ceremony</h4>--></div></div>
+                        <div class="slide-item"><img src="images/assets/lens/8.jpg" alt="Slide 2"><div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div><div class="absolute bottom-10 left-10 text-left text-white"><!--<span class="text-[9px] font-bold tracking-[0.3em] text-intl-gold uppercase">Stage 02</span><h4 class="text-3xl font-display font-black italic uppercase">The Grand Stadium</h4>--></div></div>
+                        <div class="slide-item"><img src="images/assets/lens/9.jpg" alt="Slide 3"><div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div><div class="absolute bottom-10 left-10 text-left text-white"><!--<span class="text-[9px] font-bold tracking-[0.3em] text-intl-gold uppercase">Stage 03</span><h4 class="text-3xl font-display font-black italic uppercase">Team Arrival</h4>--></div></div>
+                        <div class="slide-item"><img src="images/assets/lens/10.jpg" alt="Slide 1"><div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div><div class="absolute bottom-10 left-10 text-left text-white"><!--<span class="text-[9px] font-bold tracking-[0.3em] text-intl-gold uppercase">Stage 01</span><h4 class="text-3xl font-display font-black italic uppercase">Opening Ceremony</h4>--></div></div>
+                        <div class="slide-item"><img src="images/assets/lens/11.jpg" alt="Slide 2"><div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div><div class="absolute bottom-10 left-10 text-left text-white"><!--<span class="text-[9px] font-bold tracking-[0.3em] text-intl-gold uppercase">Stage 02</span><h4 class="text-3xl font-display font-black italic uppercase">The Grand Stadium</h4>--></div></div>
+                        <div class="slide-item"><img src="images/assets/lens/12.jpg" alt="Slide 3"><div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div><div class="absolute bottom-10 left-10 text-left text-white"><!--<span class="text-[9px] font-bold tracking-[0.3em] text-intl-gold uppercase">Stage 03</span><h4 class="text-3xl font-display font-black italic uppercase">Team Arrival</h4>--></div></div>
                     </div>
                 </div>
             </div>
@@ -300,14 +326,13 @@
         </div>
     </main>
 	
-	
 
     <!-- NEW TEAMS PAGE (replaces News) - with 2 categories, 16 teams each, logos, school, social media -->
     <main id="page-teams" class="page-view py-20">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-16">
-                <h2 class="text-5xl md:text-6xl font-display font-black uppercase tracking-tighter mb-4">Elite <span class="text-intl-blue">Squads</span></h2>
-                <p class="text-slate-500 max-w-2xl mx-auto">Meet the 32 competing academies — representing excellence, discipline, and the future of football.</p>
+                <h2 class="text-5xl md:text-6xl font-display font-black uppercase tracking-tighter mb-4">Official <span class="text-intl-blue">Teams</span></h2>
+                <p class="text-slate-500 max-w-2xl mx-auto">Meet the 32 competing teams — representing excellence, discipline, and the future of football.</p>
             </div>
 
             <!-- Category Toggle -->
@@ -330,58 +355,16 @@
         <div class="max-w-4xl mx-auto px-6">
             <div class="bg-intl-slate text-white p-12 mb-12">
                 <h2 class="text-4xl font-display font-bold uppercase mb-4">Official <span class="text-intl-gold">Organising Committee</span></h2>
-                <p class="text-slate-400">The 2026 World Elite Cup is managed by Global Football Ventures (GFV) under international federation guidelines.</p>
+                <p class="text-slate-400">The ALL STARS FIESTA 2026 is organised by Kelab Bola Sepak SASERCO and hosted by TT Associates.</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                <div class="flex gap-4 items-start"><div class="w-12 h-12 bg-slate-100 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-envelope"></i></div><div><h4 class="font-bold">General Inquiry</h4><p class="text-sm text-slate-500">contact@worldelitecup.com</p></div></div>
-                <div class="flex gap-4 items-start"><div class="w-12 h-12 bg-slate-100 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-map-pin"></i></div><div><h4 class="font-bold">HQ Office</h4><p class="text-sm text-slate-500">Avenue de la FIFA 20, Switzerland</p></div></div>
+                <div class="flex gap-4 items-start"><div class="w-12 h-12 bg-slate-100 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-envelope"></i></div><div><h4 class="font-bold">Email</h4><p class="text-sm text-slate-500">sportsclub@saserco.my</p></div></div>
+                <div class="flex gap-4 items-start"><div class="w-12 h-12 bg-slate-100 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-phone"></i></div><div><h4 class="font-bold">WhatsApp</h4><p class="text-sm text-slate-500">+60 11-11750139</p></div></div>
             </div>
         </div>
     </main>
 
-	<!-- Sponsor Section (global footer) -->
-    <section class="py-20 bg-slate-50 border-t border-slate-200">
-        <div class="max-w-7xl mx-auto px-6 text-center">
-            <h2 class="text-xs font-black tracking-[0.4em] uppercase text-slate-400 mb-16">Official Sponsors</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Partner 1 -->
-                <a href="https://tinyurl.com/jp-ASF2026" class="bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 p-8 flex flex-col items-center justify-center group no-underline">
-                    <div class="w-24 h-24 mb-4 flex items-center justify-center">
-                        <img src="images/partners/nike.png" alt="Nike" class="max-w-full max-h-full object-contain opacity-60 group-hover:opacity-100 transition-all duration-300" onerror="this.src='https://placehold.co/100x100/e2e8f0/475569?text=NIKE'">
-                    </div>
-                    <h3 class="font-display font-black text-lg uppercase tracking-tight text-slate-700 group-hover:text-intl-blue transition-colors">Nike</h3>
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mt-1">Official Kit Sponsor</p>
-                </a>
 
-                <!-- Partner 2 -->
-                <a href="#" class="bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 p-8 flex flex-col items-center justify-center group no-underline">
-                    <div class="w-24 h-24 mb-4 flex items-center justify-center">
-                        <img src="images/partners/adidas.png" alt="Adidas" class="max-w-full max-h-full object-contain opacity-60 group-hover:opacity-100 transition-all duration-300" onerror="this.src='https://placehold.co/100x100/e2e8f0/475569?text=ADIDAS'">
-                    </div>
-                    <h3 class="font-display font-black text-lg uppercase tracking-tight text-slate-700 group-hover:text-intl-blue transition-colors">Adidas</h3>
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mt-1">Official Ball Supplier</p>
-                </a>
-
-                <!-- Partner 3 -->
-                <a href="#" class="bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 p-8 flex flex-col items-center justify-center group no-underline">
-                    <div class="w-24 h-24 mb-4 flex items-center justify-center">
-                        <img src="images/partners/redbull.png" alt="Red Bull" class="max-w-full max-h-full object-contain opacity-60 group-hover:opacity-100 transition-all duration-300" onerror="this.src='https://placehold.co/100x100/e2e8f0/475569?text=REDBULL'">
-                    </div>
-                    <h3 class="font-display font-black text-lg uppercase tracking-tight text-slate-700 group-hover:text-intl-blue transition-colors">Red Bull</h3>
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mt-1">Energy Drink Partner</p>
-                </a>
-
-                <!-- Partner 4 -->
-                <a href="#" class="bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 p-8 flex flex-col items-center justify-center group no-underline">
-                    <div class="w-24 h-24 mb-4 flex items-center justify-center">
-                        <img src="images/partners/coca_cola.png" alt="Coca-Cola" class="max-w-full max-h-full object-contain opacity-60 group-hover:opacity-100 transition-all duration-300" onerror="this.src='https://placehold.co/100x100/e2e8f0/475569?text=COCA-COLA'">
-                    </div>
-                    <h3 class="font-display font-black text-lg uppercase tracking-tight text-slate-700 group-hover:text-intl-blue transition-colors">Coca-Cola</h3>
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mt-1">Official Beverage</p>
-                </a>
-            </div>
-        </div>
-    </section>
 	
 
 
@@ -400,8 +383,8 @@
 
     <footer class="bg-intl-slate text-white py-20 px-6 border-t border-slate-800">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
-            <div class="mb-10 md:mb-0"><span class="font-display text-2xl font-black uppercase">World Elite Cup</span><p class="text-slate-500 text-[10px] mt-2 uppercase tracking-[0.3em]">Official Tournament Portal © 2026</p></div>
-            <div class="flex gap-12 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400"><a href="#" class="hover:text-intl-gold">Privacy</a><a href="#" class="hover:text-intl-gold">Anti-Doping</a></div>
+            <div class="mb-10 md:mb-0"><span class="font-display text-2xl font-black uppercase">ALL STARS FIESTA</span><p class="text-slate-500 text-[10px] mt-2 uppercase tracking-[0.3em]">Official Tournament Portal © 2026</p></div>
+            <div class="flex gap-12 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400"><a href="https://drive.google.com/file/d/1NFoqP4CQlSWTUB0jTgE_0Q2EO8Bk5Juu/view?usp=drive_link" class="hover:text-intl-gold">Rules & Regulations</a><a href="http://tinyurl.com/jp-ASF2026" class="hover:text-intl-gold">Match Schedule</a></div>
         </div>
     </footer>
 
@@ -411,18 +394,18 @@
 const generateTeamsForCat05 = () => {
     const teamsData05 = [
         { name: "CATHAR FC", logo: "ASF5-01 - CATHAR FC.png", school: "MRSM TUN DR. ISMAIL", ig: "", tw: "", fb: "" },
-        { name: "MAESTROS XI", logo: "ASF5-02 - MAESTROS XI.png", school: "MRSM SULTAN AZLAN SHAH", ig: "", tw: "", fb: "" },
-        { name: "STRINEX XII", logo: "ASF5-03 - STRINEX XII.png", school: "MRSM KUBANG PASU", ig: "", tw: "", fb: "" },
-        { name: "PABLO FC", logo: "ASF5-04 - PABLO FC.png", school: "MRSM FELDA TROLAK", ig: "", tw: "", fb: "" },
+        { name: "MAESTROS XI", logo: "ASF5-02 - MAESTROS XI.PNG", school: "MRSM SULTAN AZLAN SHAH", ig: "", tw: "", fb: "" },
+        { name: "STRINEX XII", logo: "ASF5-03 - STRINEX XII.PNG", school: "MRSM KUBANG PASU", ig: "", tw: "", fb: "" },
+        { name: "PABLO FC", logo: "ASF5-04 - PABLO FC.PNG", school: "MRSM FELDA TROLAK", ig: "", tw: "", fb: "" },
         { name: "PC TROOPERS", logo: "ASF5-05 - PC TROOPERS.png", school: "MRSM PENGKALAN CHEPA", ig: "", tw: "", fb: "" },
         { name: "VICTOBROS FC", logo: "ASF5-06 - VICTOBROS FC.png", school: "SMS SELANGOR", ig: "", tw: "", fb: "" },
         { name: "XEFORANZ FC", logo: "ASF5-07 - XEFORANZ FC.png", school: "SMS HULU TERENGGANU", ig: "", tw: "", fb: "" },
         { name: "DRAVENCORES FC", logo: "ASF5-08 - DRAVENCORES FC.png", school: "INTEGOMBA - SBPI GOMBAK", ig: "", tw: "", fb: "" },
-        { name: "UVIICY FC", logo: "ASF5-09 - UVIICY FC.png", school: "KASEH - SMS BATU PAHAT", ig: "", tw: "", fb: "" },
-        { name: "LXII BROS", logo: "ASF5-10 - LXII BROS.png", school: "STAROBA - SEKOLAH TUANKU ABDUL RAHMAN", ig: "", tw: "", fb: "" },
+        { name: "UVIICY FC", logo: "ASF5-09 - UVIICY FC.PNG", school: "KASEH - SMS BATU PAHAT", ig: "", tw: "", fb: "" },
+        { name: "LXII BROS", logo: "ASF5-10 - LXII BROS.PNG", school: "STAROBA - SEKOLAH TUANKU ABDUL RAHMAN", ig: "", tw: "", fb: "" },
         { name: "ETLUSZ CALCIO", logo: "ASF5-11 - ETLUSZ CALCIO.png", school: "SBPI RAWANG", ig: "", tw: "", fb: "" },
-        { name: "ZIA FC", logo: "ASF5-12 - ZIA FC.png", school: "SASEMOB - SMS SEMBRONG", ig: "", tw: "", fb: "" },
-        { name: "REVO ", logo: "ASF5-13 - REVO.png", school: "SDARA - SEKOLAH DATO ABDUL RAZAK", ig: "", tw: "", fb: "" },
+        { name: "ZIA FC", logo: "ASF5-12 - ZIA FC.PNG", school: "SASEMOB - SMS SEMBRONG", ig: "", tw: "", fb: "" },
+        { name: "REVO ", logo: "ASF5-13 - REVO.PNG", school: "SDARA - SEKOLAH DATO ABDUL RAZAK", ig: "", tw: "", fb: "" },
         { name: "ARCEUSS FC", logo: "ASF5-14 - ARCEUSS FC.png", school: "ALKIS - KOLEJ ISLAM SULTAN ALAM SHAH", ig: "", tw: "", fb: "" },
         { name: "MAGNUS FT", logo: "ASF5-15 - MAGNUS FT.jpeg", school: "SMAP BENTONG", ig: "", tw: "", fb: "" },
         { name: "XANTHRONS FC", logo: "ASF5-16 - XANTHRONS FC.png", school: "SASEROBA - SMS TUANKU MUNAWIR", ig: "", tw: "", fb: "" }
